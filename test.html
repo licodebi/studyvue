@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        
+        <p>{{msg}}</p>
+        <p>{{msg.toUpperCase()}}</p>
+        <h2>v-html</h2>
+        <p v-html="msg"></p>
+        <h2>v-text</h2>
+        <p v-if="ok" v-text="msg" :style="{display:option}"></p>
+        <p v-else="!ok" v-text="imgUrl" :style="{display:option}"></p>
+
+        <button @click="ok=!ok">点击</button>
+    </div>
+</body>
+<script >
+    const  vm=new Vue({
+        el:'#app',
+        data(){
+            return {
+                msg: '<a href="http:www.baidu.com">I Will Back!</a>',
+                imgUrl: "https://cn.vuejs.org/images/logo.png",
+                option:'',
+                ok:true
+            }
+        },
+        methods:{
+            test1() {
+                    alert('heheh');
+                },
+            test2(content){
+                alert(content);
+            }
+        }
+    })
+</script>
+</html>
