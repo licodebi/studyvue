@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <title>Document</title>
+</head>
+<body>
+    <div id="demo">
+        <h1>1. 绑定监听</h1>
+        <button @click="test1">test1</button>
+        <button @click="test2('abc')">test2</button>
+        <button @click="test3">test3</button>
+        <button @click="test4(123, $event)">test4</button>
+
+        <h1>2. 事件修饰符</h1>
+
+        <h3> 停止事件冒泡 </h3>
+        <div style="width: 200px; height: 200px; background: red;" @click="test5">
+            <div style="width: 100px; height: 100px; background: blue;" @click.stop="test6"></div>
+        </div>
+        
+        <h3> 阻止事件默认行为 </h3>
+        <a href="http://www.baidu.com" @click.prevent="test7">去百度首页</a>
+    
+        <h1>3. 按键修饰符</h1>
+        <input type="text" @keyup.13="test8">
+        <input type="text" @keyup.enter="test8">
+
+        <h1>v-model</h1>
+        <form action="/xxx" @submit.prevent="handleSubmit">
+            <span>用户名：</span>
+            <input type="text" v-model="username"><br>
+            <span>密码</span>
+            <input type="password" v-model="pwd"><br>
+    
+            <span>性别：</span>
+            <input type="radio" id="female" value="女" v-model="sex">
+                <label for="female">女</label>
+            <input type="radio" id="male" value="男" v-model="sex">
+                <label for="male">男</label><br>
+    
+            <span>爱好：</span>
+            <input type="checkbox" id="basket" value="basket" v-model="likes">
+            <label for="basket">篮球</label>
+            <input type="checkbox" id="foot" value="foot" v-model="likes">
+            <label for="foot">足球</label>
+            <input type="checkbox" id="pingpang" value="pingpang" v-model="likes">
+            <label for="pingpang">乒乓</label><br>
+    
+            <span>城市：</span>
+            <select v-model="cityId">
+                <option value="">未选择</option>
+                <option :value="city.id" v-for="(city, index) in allCitys" :key="index">{{city.name}}</option>
+            </select><br>
+            <span>介绍：</span>
+            <textarea rows="10" v-model="desc"></textarea><br>
+
+            <input type="submit" value="注册">
+        </form>
+    </div>
+
+
+    <script src="../js/vue.js"></script>
+
+    <script>
+        new Vue({
+            el: "#demo",
+            data: { 
+                username: '',
+                pwd: '',
+                sex: '女',
+                likes: ['foot'],
+                cityId: '',
+                allCitys: [{id:1, name:'BJ'}, {id:2, name:'SH'}, {id:3, name:'WH'}],
+                desc:''
+            },
+            methods: {
+                test1(){
+                    alert("hahah");
+                },
+                test2(msg){
+                    alert(msg);
+                },
+                test3(event){
+                    alert(event.target.innerHTML);
+                },
+                test4(number, event){
+                    alert(number + '---' + event.target.innerHTML);
+                },
+                test5(){
+                    alert('out');
+                },
+                test6(){
+                    // event.stopPropagation(); // 停止事件冒泡 原来的做法
+                    alert('inner');
+                },
+                test7(){
+                    // event.preventDefault(); // 阻止事件默认行为 原来的做法
+                    alert("2222");
+                },
+                test8(event){
+                    // if(event.keyCode===13){ // 原来的做法
+                    //     alert(event.target.value);
+                    // }
+                    alert(event.target.value);
+                },
+                handleSubmit(){
+                    console.log(this.username, this.pwd, this.sex, this.likes, this.cityId, this.desc);
+                }
+            }
+        })
+    </script>
+</body>
+</html>

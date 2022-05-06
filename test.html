@@ -15,10 +15,23 @@
         <h2>v-html</h2>
         <p v-html="msg"></p>
         <h2>v-text</h2>
-        <p v-if="ok" v-text="msg" :style="{display:option}"></p>
-        <p v-else="!ok" v-text="imgUrl" :style="{display:option}"></p>
-
+        <p v-if="ok">成功了</p>
+        <p v-else >失败了</p>
+        <input type="text" v-model="fullName">
+        <p>{{firstName}}-{{lastName}}</p>
+        <p>{{now}}</p>
         <button @click="ok=!ok">点击</button>
+        <button @click="isHot=!isHot">点击2</button>
+
+        <h2>class绑定</h2>
+        <div class="basic" :class="mood" @click="changeMood">{{fullName}}</div>
+
+        <!-- 绑定class样式--数组写法，适用于：要绑定的样式个数不确定、名字也不确定 -->
+        <div class="basic" :class="classArr" @click="changeMood2">{{fullName}}</div> <br /><br />
+        <!-- 绑定class样式--对象写法，适用于：要绑定的样式个数确定、名字也确定，但要动态决定用不用 -->
+        <div class="basic" :class="classObj" @click="changeMood3">{{fullName}}</div>
+        <!-- 绑定style样式--对象写法 -->
+        <div class="basic" :style="styleObj" @click="changeMood4">{{fullName}}</div>
     </div>
 </body>
 <script >
@@ -29,7 +42,42 @@
                 msg: '<a href="http:www.baidu.com">I Will Back!</a>',
                 imgUrl: "https://cn.vuejs.org/images/logo.png",
                 option:'',
-                ok:true
+                ok:true,
+                firstName:'李',
+                lastName:'xx',
+                isHot:true,
+                person:{name:'李xx',age:'24'},
+                mood:'normal',
+                classArr: ['yk2', 'yk3'],
+                classObj: {
+                    yk1: true,
+                    yk2: false,
+                    yk3: true
+                },
+                styleObj: {
+                    fontSize: '40px',
+                    color: 'red',
+                    display:'',
+                }
+            }
+        },
+        computed:{
+            fullName:{
+                get(){
+                    console.log('get被调用了');
+                    return this.firstName+'-'+this.lastName
+                },
+                set(value){
+                    console.log('set',value);
+                    const arr=value.split('-');
+                    this.firstName=arr[0];
+                    this.lastName=arr[1];
+                }
+            },
+            now:{
+                get(){
+                    return Date.now();
+                }
             }
         },
         methods:{
@@ -38,8 +86,82 @@
                 },
             test2(content){
                 alert(content);
+            },
+            test3(value){
+                this.fullName=value;
+            },
+            changeMood(){
+                const arr=['happy', 'sad', 'normal']
+                const index=Math.floor(Math.random()*3)
+                this.mood=arr[index]
+            },
+            changeMood2(){
+                this.classArr.push('yk1')
+            },
+            changeMood3(){
+                this.classObj.yk1=false
+            },
+            changeMood4(){
+                this.styleObj.display='none'
+            }
+        },
+        watch:{
+            isHot:{
+                immediate:true,
+                handler(newValue,oldValue){
+                    console.log("isHot被修改了",newValue,oldValue);
+                }
+            },
+            person:{
+                deep:true,
+                handler(newValue,oldValue){
+                    console.log("isHot被修改了",newValue.name,oldValue.name);
+                }
             }
         }
     })
+    // vm.$watch('isHot',{
+    //     immediate:true, //初始化时让handler调用一下
+    //     //handler什么时候调用？当isHot发生改变时。
+    //     handler(newValue,oldValue){
+    //         console.log('isHot被修改了',newValue,oldValue)
+    //     }
+    // })
+
 </script>
+<style>
+    .basic {
+      width: 400px;
+      height: 100px;
+      border: 1px solid black;
+    }
+
+    .happy {
+      border: 4px solid red;
+      ;
+      background-color: rgba(255, 255, 0, 0.644);
+      background: linear-gradient(30deg, yellow, pink, orange, yellow);
+    }
+
+    .sad {
+      border: 4px dashed rgb(2, 197, 2);
+      background-color: gray;
+    }
+
+    .normal {
+      background-color: skyblue;
+    }
+    .yk1 {
+      background-color: yellowgreen;
+    }
+
+    .yk2 {
+      font-size: 30px;
+      text-shadow: 2px 2px 10px red;
+    }
+
+    .yk3 {
+      border-radius: 20px;
+    }
+  </style>
 </html>
