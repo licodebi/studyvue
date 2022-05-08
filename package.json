@@ -24,7 +24,8 @@
     "source-map-js": "^1.0.2",
     "sourcemap-codec": "^1.4.8",
     "vue": "^3.2.33",
-    "vue-cli": "^2.9.6"
+    "vue-cli": "^2.9.6",
+    "vue-router": "^4.0.15"
   },
   "devDependencies": {},
   "scripts": {
